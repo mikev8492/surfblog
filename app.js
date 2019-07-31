@@ -4,6 +4,7 @@ const express = require("express");
       app = express();
 
 mongoose.connect("mongodb+srv://mikev8492:1234@surfblog-dnpkw.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true});
+mongoose.set("useFindAndModify", false);
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
