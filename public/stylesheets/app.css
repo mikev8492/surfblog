@@ -1,4 +1,13 @@
 
-.container {
-  margin-top: 0.7em;
+.container.main {
+  margin-top: 7.0em;
+  margin-bottom: 1em;
+}
+
+#box {
+  margin-top: 5em;
+}
+
+#icon {
+  font-size: 2em;
 }

@@ -10,7 +10,10 @@
     <% blogs.forEach(function(blog){ %>
       <div class="ui segment">
         <div class="ui header">
-          <h2><%= blog.title %></h2>
+          <a class="header" href="/surf/<%= blog.id %>"><%= blog.title %></a>
+          <div class="meta">
+            <span><%= blog.created.toDateString() %></span>
+          </div>
         </div>
         <div class="image">
           <img src="<%= blog.image %>">

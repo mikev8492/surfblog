@@ -2,24 +2,23 @@
 
 <div id="box" class="ui main text container segment">
   <div class="ui huge header">
-    New Blog
+    Edit <%= blog.title %>
   </div>
-  <form class="ui form" action="/surf" method="post">
+  <form class="ui form" action="/surf/<%= blog._id %>?_method=PUT" method="post">
     <div class="field">
       <label>Title</label>
-      <input type="text" name="blog[title]" placeholder="Title" required>
+      <input type="text" name="blog[title]" value="<%= blog.title %>" required>
     </div>
     <div class="field">
       <label>Image</label>
-      <input type="text" name="blog[image]" placeholder="Image">
+      <input type="text" name="blog[image]" value="<%= blog.image %>">
     </div>
     <div class="field">
       <label>Body</label>
-      <textarea name="blog[body]" rows="8" cols="80" required></textarea>
+      <textarea name="blog[body]" rows="8" cols="80" required><%= blog.body %></textarea>
     </div>
     <input class="ui teal button" type="submit">
   </form>
 </div>
-
 
 <% include partials/footer %>

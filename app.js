@@ -1,6 +1,7 @@
 const express = require("express");
       mongoose = require("mongoose");
       bodyParser = require("body-parser");
+      methodOverride = require("method-override");
       app = express();
 
 mongoose.connect("mongodb+srv://mikev8492:1234@surfblog-dnpkw.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true});
@@ -8,12 +9,14 @@ mongoose.set("useFindAndModify", false);
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
+app.use(methodOverride("_method"));
 
 //MONGOOSE MODEL CONFIGURATION
 const blogSchema = new mongoose.Schema({
   title: String,
   image: String,
-  body: String
+  body: String,
+  created: {type: Date, default: Date.now}
 });
 
 const Blog = mongoose.model("Blog", blogSchema);
@@ -52,6 +55,57 @@ app.get("/surf", function(req, res){
 //NEW ROUTE
 app.get("/surf/new", function(req, res){
   res.render("new");
+});
+
+//CREATE ROUTE
+app.post("/surf", function(req, res){
+  Blog.create(req.body.blog, function(err, newBlog){
+    if (err) {
+      res.render("new");
+      console.log(err);
+    } else {
+      res.redirect("/surf");
+      // console.log(req.body);
+      // console.log(newBlog);
+    }
+  });
+});
+
+//SHOW ROUTE
+app.get("/surf/:id", function(req, res){
+  //Blog.findById(id, callback)
+  Blog.findById(req.params.id, function(err, foundBlog){
+    if (err) {
+      res.redirect("/surf");
+      console.log(err);
+    } else {
+      res.render("show", {blog: foundBlog});
+    }
+  });
+});
+
+//EDIT ROUTE
+app.get("/surf/:id/edit", function(req, res){
+  Blog.findById(req.params.id, function(err, foundBlog){
+    if (err) {
+      res.redirect("/surf");
+      console.log(err);
+    } else {
+      res.render("edit", {blog: foundBlog});
+    }
+  });
+});
+
+//UPDATE ROUTE
+app.put("/surf/:id", function(req, res){
+  Blog.findByIdAndUpdate(req.params.id, req.body.blog, function(err, updatedBlog){
+    if (err) {
+      res.redirect("/surf");
+      console.log(err);
+    } else {
+      res.redirect("/surf/" + req.params.id);
+    }
+  });
 });
 
 app.listen(3000, function(){
